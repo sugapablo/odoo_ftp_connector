@@ -9,6 +9,7 @@
                 <tree string="FTP">
                     <field name="name"/>
                     <field name="company_id"/>
+                    <button name="test_connection" type="object" class="btn-primary" string="Test Connection" context="{'server':id}"/>
                 </tree>
 			</field>
 		</record>
@@ -33,10 +34,10 @@
 			</field>
 		</record>
         <record model="ir.actions.act_window" id="odoo_ftp_servers_act_window_ftp">
-					 <field name="name">FTP Servers</field>
-					 <field name="res_model">odoo_ftp_connector.ftp_servers</field>
-					 <field name="view_mode">tree,form</field>
-					 <field name="view_id" ref="odoo_ftp_connector_ftp_servers_listview"/>
+			<field name="name">FTP Servers</field>
+			<field name="res_model">odoo_ftp_connector.ftp_servers</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="odoo_ftp_connector_ftp_servers_listview"/>
 	 	</record>
 		<menuitem 
 			id="odoo_ftp_servers_act_window_ftp_menu" 

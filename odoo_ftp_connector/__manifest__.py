@@ -1,6 +1,6 @@
 {
     'name': 'Odoo FTP Connector',
-    'version': '0.1',
+    'version': '0.2',
     'summary': 'Connects Odoo with FTP server',
     'description': 'This module allows Odoo to connect with an FTP server and perform file operations.',
     'category': 'Tools',

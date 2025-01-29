@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from io import StringIO
-from odoo import models, fields, os
+from odoo import models, fields, os, _
 try:
     import pysftp
 except ModuleNotFoundError:
@@ -22,6 +22,51 @@ class OdooFtpServers(models.Model):
     ftp_password = fields.Char('FTP Password')
     ftp_port = fields.Integer('FTP Port')
     ftp_path = fields.Char('FTP Path')
+
+    def message(self,title,message,type="success"):
+        """
+        Display message
+        """
+        return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': title,
+                    'message': message,
+                    'type': type,
+                    'sticky': False,
+                }
+            }
+    
+    def test_connection(self):
+        """
+        Send string to FTP
+        """
+        cnopts = CnOpts()
+        cnopts.hostkeys = None
+        server = self.env.context.get('server')
+        ftp = self.env['odoo_ftp_connector.ftp_servers'].search([('id','=',server)],limit=1)
+        for rec in ftp:
+            try:
+                sftp = pysftp.Connection(host=rec.ftp_server,
+                            username=rec.ftp_login,
+                            password=rec.ftp_password,
+                            port=rec.ftp_port,
+                            cnopts=cnopts)
+                title = _("Success")
+                message = _("SFTP Connection valid.")
+                return self.message(title,message)
+                
+            except Exception as e:
+                title = _("Failed")
+                message = _(str(e))
+                return self.message(title,message,'danger')
+                
+        title = _("Failed")
+        message = _("No FTP information found.")
+        return self.message(title,message,'warning')
+                
+       
 
     def ftp_send_string(self,server,filename,string):
         """

@@ -86,3 +86,19 @@ class OdooFtpServers(models.Model):
                 
         return True
     
+    def ftp_download_file(self, server, filename, local_path):
+        """
+        Download file from FTP server
+        """
+        cnopts = CnOpts()
+        cnopts.hostkeys = None
+        ftp = self.env['odoo_ftp_connector.ftp_servers'].search([('id','=',server)],limit=1)
+        for rec in ftp:
+            with pysftp.Connection(host=rec.ftp_server,
+                            username=rec.ftp_login,
+                            password=rec.ftp_password,
+                            port=rec.ftp_port,
+                            cnopts=cnopts) as sftp:
+                sftp.get(rec.ftp_path + '/' + filename, local_path + filename)
+                
+        return True

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from io import StringIO
+import time
 from odoo import models, fields, os, _
 try:
     import pysftp
 except ModuleNotFoundError:
     os.system("pip3 install pysftp")
+    time.sleep(20)
     import pysftp
 from pysftp import CnOpts
 
